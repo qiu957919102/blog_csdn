@@ -2,11 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>用户注册</title>
     <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7-dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.css"/>
+    <style>
+        .register {
+            width: 400px;
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid #f0f0f0;
+            padding: 10px 30px 50px 30px;
+            -webkit-box-shadow: 5px 10px 10px rgba(0, 0, 0, .05);
+            box-shadow: 5px 10px 10px rgba(0, 0, 0, .05);
+        }
+        .usertitle{
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+<div class="register">
+    <div class="usertitle">
+        <h1>用户注册</h1>
+    </div>
+    <div>
+        <form action="user_register.html" role="form">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="password1">密码</label>
+                <input type="password" class="form-control" name="password1" id="password1" placeholder="请输入密码">
+            </div>
+            <div class="form-group">
+                <label for="password2">确认密码</label>
+                <input type="password" class="form-control" name="password2" id="password2" placeholder="请确认密码">
+            </div>
+            <div class="form-group">
+                <label for="email">邮箱</label>
+                <input type="email" class="form-control" id="email" placeholder="请输入邮箱">
+            </div>
+            <div class="form-group">
+                <label for="password">验证码</label>
 
+                <div class="row">
+                    <div class="col-xs-7">
+                        <input type="password" class="form-control" id="password" placeholder="请输入验证码">
+                    </div>
+                    <div class="col-xs-5">
+                        <img src="/check_code.html">
+                    </div>
+                </div>
+
+            </div>
+
+            <input type="submit" value="注册">
+        </form>
+    </div>
+</div>
 </body>
 </html>
