@@ -19,3 +19,6 @@ def check_code(request):
 
     request.session['CheckCode'] = code
     return HttpResponse(stream.getvalue())
+
+def user_login(request):
+    return render(request,"user_login.html")
