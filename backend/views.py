@@ -12,9 +12,9 @@ def user_register(request):
 
 def check_code(request):
     stream = BytesIO()
-    print(stream)
+    # print(stream)
     img, code = create_validate_code()
-    print(img,code)
+    # print(img,code)
     img.save(stream, 'PNG')
 
     request.session['CheckCode'] = code
