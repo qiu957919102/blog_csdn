@@ -19,4 +19,5 @@ from backend import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^user_register.html$', views.user_register),
+    url(r'^check_code.html$', views.check_code),
 ]
