@@ -99,7 +99,10 @@ DATABASES = {
         'PASSWORD':'123456!',  # 用户密码
         'HOST':'127.0.0.1', # 访问的数据库的主机的ip地址
         'PORT':'3306', # 默认mysql访问端口
-        "OPTIONS": {"init_command": "SET default_storage_engine=INNODB;",'charset':'utf8'}
+        "OPTIONS": {
+            'init_command': 'SET default_storage_engine=INNODB',
+            'charset':'utf8'
+        }
     }
 }
 
