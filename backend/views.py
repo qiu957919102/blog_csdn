@@ -7,6 +7,13 @@ from io import BytesIO
 
 
 def user_register(request):
+    if request.method == "POST":
+        print(request.POST)
+        print(request.POST.get("username"))
+        print(request.POST.get("password1"))
+        print(request.POST.get("password2"))
+        print(request.POST.get("code_ver"))
+        print(request.POST.get("email"))
     return render(request,"user_register.html")
 
 
