@@ -11,7 +11,15 @@
             /* 設定body高度為100% 拉到視窗可視的大小 */
             height: 100%;
         }
-
+        .left{
+            float: left;
+        }
+        .right{
+            float: right;
+        }
+        .hide{
+            display: none;
+        }
         .wrapper {
             /* 設定高度最小為100%, 如果內容區塊很多, 可以長大 */
             min-height: 100%;
@@ -24,14 +32,48 @@
             height: 48px;
             box-sizing: border-box;
             background-color: #8a6d3b;
+            min-width: 1100px;
+            line-height: 48px;
+            font-size: 13px;
         }
 
         .pg-body {
             /* 留出header及footer區塊的空間 */
-            padding-top: 48px;
-            padding-bottom: 48px;
-            background-color: white;
+            position: absolute;
+            top: 48px;
+            {#left: 0;#}
+
+            bottom: 48px;
+            {#padding-top: 48px;#}
+            {#padding-bottom: 48px;#}
+            background-color: #b2dba1;
+            {#margin: auto;#}
+
+            margin-right: 20%;
+            margin-left: 20%;
+            font-size: 24px;
+            {#position: absolute;#}
+            {#这三可以弄高度满屏#}
+            {#left: 0;#}
+            {#margin-bottom: 48px;#}
+            {#margin-top: 48px;#}
+            {#以上#}
+            {#padding-top: 48px;#}
+
         }
+
+
+{#        .left {#}
+{#    float: left;#}
+{#    width: 200px;#}
+{#    height: 100%;#}
+{#    background-color: red;#}
+
+{#.right {#}
+{#    float: left;#}
+{#    width: calc(100% - 200px);#}
+{#    height: 100%;#}
+{#    background-color: blue;#}
 
         .pg-bottom {
             /* 設定footer的高度 */
@@ -45,14 +87,55 @@
             background-color: #1b6d85;
 
         }
+        .pg-header .logo{
+            color: white;
+            font-size: 24px;
+            width: 200px;
+            background-color: #1c5a9c;
+            text-align: center;
+        }
+        .pg-header .hl-menu, .pg-header .hr-menu{
+            display: block;
+            font-size: 24px;
+            text-decoration: none;
+
+        }
+        .pg-header .hl-menu .item{
+            padding: 10px;
+        }
+        .pg-header .hr-menu .item{
+            padding: 10px;
+        }
+        a{text-decoration: none;}    /*/这个是设置a标签的默认状态去除下划线*/
+        a:visited{text-decoration: none;}    /*/这个是设置a标签的访问过后的状态去除下划线*/
+        a:hover {text-decoration: none;}    /*/这个是设置a标签的鼠标覆盖状态去除下划线*/
+        a:active{text-decoration:none;}    /*/这个是设置a标签的活跃状态去除下划线*/
+
     </style>
 </head>
 <body>
 <div class="wrapper">
-    <div class="pg-header">1</div>
-    <div class="pg-body">
-        <div class="pg-body-left">左</div>
-        <div class="pg-body-right">右</div>
+    <div class="pg-header">
+        <div class="logo left">博客系统</div>
+        <div class="hl-menu left">
+            <a class="item" href="#">linux运维</a>
+            <a class="item" href="#">python开放</a>
+            <a class="item" href="#">自动化测试</a>
+        </div>
+        <div class="hr-menu right">
+            <a class="item" href="#">消息</a>
+            <a class="item" href="#">通知</a>
+            <a class="item" href="#">任务</a>
+            <div class="avatar right">
+                <a class="item" href="#">
+                    <img src="/static/imgs/avatar/default.png">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="pg-body container">
+        <div class="col-md-8">左</div>
+        <div class="col-md-4">右</div>
     </div>
     <div class="pg-bottom">3</div>
 </div>
