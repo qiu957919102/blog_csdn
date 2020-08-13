@@ -7,6 +7,11 @@ from io import BytesIO
 
 
 def user_register(request):
+    """
+    注册方法
+    :param request:
+    :return:
+    """
     if request.method == "POST":
         result = {'status': False, 'message': None, 'data': None}
         CheckCode = request.session.get("CheckCode",None)
@@ -16,26 +21,27 @@ def user_register(request):
         code_ver = request.POST.get("code_ver")
         nickname = request.POST.get("nickname")
         email = request.POST.get("email")
-        if CheckCode.upper() == code_ver.upper():
-            if password1 == password2:
-                #models.UserInfo.objects.create(username=str(username),password=str(password1),email=email,nickname=str(nickname))
-                # print(reset)
-                if all([username,password1,password2,nickname]):
-                    ret = models.UserInfo.objects.filter(username=username)
-                    eret = models.UserInfo.objects.filter(email=email)
-                    if ret:
-                        result['message'] = "用户名🕐已被注册"
-                    elif eret:
-                        result['message'] = "邮箱已被注册"
-                    else:
-                        models.UserInfo.objects.create(username=username,password=password1,email=email,nickname=nickname)
-                        result['status'] = True
+        if all([username, password1, password2, nickname,CheckCode]):
+            if CheckCode.upper() == code_ver.upper():
+                if password1 == password2:
+                    #models.UserInfo.objects.create(username=str(username),password=str(password1),email=email,nickname=str(nickname))
+                    # print(reset)
+                        ret = models.UserInfo.objects.filter(username=username)
+                        eret = models.UserInfo.objects.filter(email=email)
+                        if ret:
+                            result['message'] = "用户名🕐已被注册"
+                        elif eret:
+                            result['message'] = "邮箱已被注册"
+                        else:
+                            models.UserInfo.objects.create(username=username,password=password1,email=email,nickname=nickname)
+                            result['status'] = True
+
                 else:
-                    result['message'] = '请填写完毕注册信息'
+                    result['message'] = '密码不一致'
             else:
-                result['message'] = '密码不一致'
+                result['message'] = '验证码错误'
         else:
-            result['message'] = '验证码错误'
+            result['message'] = '请填写完毕注册信息'
 
 
         # print(request.POST)
@@ -49,6 +55,11 @@ def user_register(request):
 
 
 def check_code(request):
+    """
+    验证码方法
+    :param request:
+    :return:
+    """
     stream = BytesIO()
     # print(stream)
     img, code = create_validate_code()
@@ -59,4 +70,33 @@ def check_code(request):
     return HttpResponse(stream.getvalue())
 
 def user_login(request):
+    """
+    用户登录方法
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        result = {'status': False, 'message': None, 'data': None}
+        CheckCode = request.session.get("CheckCode",None)
+        username = request.POST.get("username")
+        password = request.POST.get("password1")
+        code_ver = request.POST.get("code_ver")
+        rmb = request.POST.get("rmb")
+        # print(request.POST)
+        if all([username, password, CheckCode]):
+            if CheckCode.upper() == code_ver.upper():
+                user_info = models.UserInfo.objects.filter(username=username,password=password).first()
+                # print(type(user_info))
+                if user_info:
+                    result['status'] = True
+                    request.session['user_info'] = str(user_info)
+                    if rmb:
+                        request.session.set_expiry(60 * 60 * 24 * 30)
+                    return render(request, "index.html")
+                else:
+                    result['message'] = '用户名或者密码错误'
+            else:
+                result['message'] = '验证码错误'
+        else:
+            result['message'] = '请填写完毕登录信息'
     return render(request,"user_login.html")
