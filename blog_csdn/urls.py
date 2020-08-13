@@ -16,8 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from backend import views
+from web import views as view_web
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^user_register.html$', views.user_register),
+    url(r'^user_login.html$', views.user_login),
     url(r'^check_code.html$', views.check_code),
+    url(r'^index.html$', view_web.index),
 ]
