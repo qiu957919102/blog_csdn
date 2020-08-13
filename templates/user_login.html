@@ -30,7 +30,8 @@
         <h1>用户登录</h1>
     </div>
         <div>
-        <form action="user_register.html" role="form">
+        <form action="user_register.html" role="form" method="post">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="username">用户名</label>
                 <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名">
@@ -40,11 +41,11 @@
                 <input type="password" class="form-control" name="password1" id="password1" placeholder="请输入密码">
             </div>
             <div class="form-group">
-                <label for="password">验证码</label>
+                <label for="code_ver">验证码</label>
 
                 <div class="row">
                     <div class="col-xs-7">
-                        <input type="password" class="form-control" id="password" placeholder="请输入验证码">
+                        <input type="text" class="form-control" id="code_ver" placeholder="请输入验证码">
                     </div>
                     <div class="col-xs-5">
                         <img src="/check_code.html" onclick="changeImg(this);">
