@@ -201,7 +201,7 @@ class Article2Tag(models.Model):
 
 class Tpl(models.Model):
     """
-    待确认
+    待确认? 评分
     """
     title = models.CharField(max_length=32)
     content = models.TextField()
@@ -237,3 +237,7 @@ class Trouble(models.Model):
     class Meta:
         verbose_name = "报障表"
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        ###此方法在admin中注册的model中返回字段的中文信息
+        return self.title
