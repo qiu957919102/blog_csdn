@@ -100,3 +100,7 @@ def user_login(request):
         else:
             result['message'] = '请填写完毕登录信息'
     return render(request,"user_login.html")
+
+
+def admin_index(request):
+    return render(request,"admin_index.html")
