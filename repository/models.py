@@ -20,9 +20,19 @@ class UserInfo(models.Model):
                                   through='UserFans',
                                   related_name='f',
                                   through_fields=('user', 'follower'))
+    class Meta:
+        """
+        此meta让此model在admin页面中显示中文表示此model功能
+        verbose_name = "用户信息表"
+        verbose_name_plural = verbose_name
+        """
+        verbose_name = "用户信息表"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.username
+
+
 class Blog(models.Model):
     """
     博客信息
@@ -32,6 +42,9 @@ class Blog(models.Model):
     site = models.CharField(verbose_name='个人博客前缀', max_length=32, unique=True)
     theme = models.CharField(verbose_name='博客主题', max_length=32)
     user = models.OneToOneField(to='UserInfo', to_field='nid')
+    class Meta:
+        verbose_name = "博客信息"
+        verbose_name_plural = verbose_name
 
 
 
@@ -46,6 +59,8 @@ class UserFans(models.Model):
         unique_together = [
             ('user', 'follower'),
         ]
+        verbose_name = "互粉关系表"
+        verbose_name_plural = verbose_name
 
 
 class Category(models.Model):
@@ -57,7 +72,9 @@ class Category(models.Model):
 
     blog = models.ForeignKey(verbose_name='所属博客', to='Blog', to_field='nid')
     # blog_id = 1
-
+    class Meta:
+        verbose_name = "博主个人文章分类表"
+        verbose_name_plural = verbose_name
 # blog = Blog.objects.filter(site='bingdujieer').first()
 # info = obj.user
 # category_list = Category.objects.filter(blog_id=blog.nid)
@@ -69,6 +86,9 @@ class ArticleDetail(models.Model):
     content = models.TextField(verbose_name='文章内容', )
 
     article = models.OneToOneField(verbose_name='所属文章', to='Article', to_field='nid')
+    class Meta:
+        verbose_name = "文章详细表"
+        verbose_name_plural = verbose_name
 
 
 class UpDown(models.Model):
@@ -83,7 +103,8 @@ class UpDown(models.Model):
         unique_together = [
             ('article', 'user'),
         ]
-
+        verbose_name = "文章顶或踩"
+        verbose_name_plural = verbose_name
 
 class Comment(models.Model):
     """
@@ -96,7 +117,9 @@ class Comment(models.Model):
     reply = models.ForeignKey(verbose_name='回复评论', to='self', related_name='back', null=True)
     article = models.ForeignKey(verbose_name='评论文章', to='Article', to_field='nid')
     user = models.ForeignKey(verbose_name='评论者', to='UserInfo', to_field='nid')
-
+    class Meta:
+        verbose_name = "评论表"
+        verbose_name_plural = verbose_name
 
 class Tag(models.Model):
     """
@@ -110,6 +133,9 @@ class Tag(models.Model):
 # info = obj.user
 # category_list = Category.objects.filter(blog_id=blog.nid)
 # Tag.objects.filter(blog_id=blog.nid)
+    class Meta:
+        verbose_name = "标签表"
+        verbose_name_plural = verbose_name
 
 class Article(models.Model):
     """
@@ -140,7 +166,9 @@ class Article(models.Model):
         through='Article2Tag',
         through_fields=('article', 'tag'),
     )
-
+    class Meta:
+        verbose_name = "文章表"
+        verbose_name_plural = verbose_name
 
 class Article2Tag(models.Model):
     """
@@ -153,7 +181,8 @@ class Article2Tag(models.Model):
         unique_together = [
             ('article', 'tag'),
         ]
-
+        verbose_name = "文章与标签的多对多关系表"
+        verbose_name_plural = verbose_name
 # http://127.0.0.1:8000/wupeiqi/tag/1.html
 
 # 自定义第三张表
@@ -177,7 +206,9 @@ class Tpl(models.Model):
     title = models.CharField(max_length=32)
     content = models.TextField()
 
-
+    class Meta:
+        verbose_name = "待确认"
+        verbose_name_plural = verbose_name
 class Trouble(models.Model):
     """
     报障表
@@ -203,3 +234,6 @@ class Trouble(models.Model):
         (3, '活很好'),
     )
     pj = models.IntegerField(choices=pj_choices,null=True,default=2)
+    class Meta:
+        verbose_name = "报障表"
+        verbose_name_plural = verbose_name
