@@ -3,6 +3,7 @@ from django.shortcuts import HttpResponse
 from repository import models
 from utils.utilsfile import create_validate_code
 from io import BytesIO
+from django.core import serializers
 # Create your views here.
 
 
@@ -85,11 +86,15 @@ def user_login(request):
         # print(request.POST)
         if all([username, password, CheckCode]):
             if CheckCode.upper() == code_ver.upper():
-                user_info = models.UserInfo.objects.filter(username=username,password=password).first()
-                # print(type(user_info))
+                user_info = models.UserInfo.objects.filter(username=username,password=password).only('nid', 'nickname','username', 'email','avatar',)
+                # user_info = models.UserInfo.objects.filter(username=username,password=password).values('nid', 'nickname','username', 'email','avatar',)
+                print(user_info)
+
                 if user_info:
                     result['status'] = True
-                    request.session['user_info'] = str(user_info)
+                    user_info = serializers.serialize('json',user_info)
+                    print(user_info)
+                    request.session['user_info'] = user_info
                     if rmb:
                         request.session.set_expiry(60 * 60 * 24 * 30)
                     return render(request, "index.html")
