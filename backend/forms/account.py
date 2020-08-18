@@ -40,18 +40,75 @@ class LoginForm(BaseForm, django_forms.Form):
 
 
 class RegisterForm(BaseForm, django_forms.Form):
-    username = django_fields.CharField()
-    password = django_fields.CharField()
-    confirm_pwd = django_fields.CharField()
+    username = django_fields.CharField(
+        error_messages={'required': '用户名不能为空.'}
+    )
+    """
+    # 定义为密码文本,render_value设置为验证不通过时不把密码刷新掉
+    """
+    password1 = django_fields.CharField(
+        error_messages={'required': '密码不能为空.'}
+    )
+    password2 = django_fields.CharField(
+        error_messages={'required': '确认密码不能为空.'}
+    )
+    check_code = django_fields.CharField(
+        error_messages={'required': '验证码不能为空.'}
+    )
+    nickname = django_fields.CharField(
+        error_messages={'required': '昵称不能为空.'}
+    )
+    email = django_fields.EmailField(
+        error_messages={'required': '验证码不能为空.','invalid': '邮箱格式错误'}
+    )
 
     def clean(self):
-        v1 = self.cleaned_data['password']
-        v2 = self.cleaned_data['confirm_pwd']
+        v1 = self.cleaned_data.get('password1')
+        v2 = self.cleaned_data.get('password2')
+        print(v1,v2)
         if v1 == v2:
             pass
         else:
             from django.core.exceptions import ValidationError,NON_FIELD_ERRORS
             raise ValidationError('密码输入不一致')
 
+
+    def clean_check_code(self):
+        if self.request.session.get('CheckCode').upper() != self.request.POST.get('check_code').upper():
+            raise ValidationError(message='验证码错误', code='invalid')
+
+"""
+
+
+from django import forms
+from django.contrib.auth.models import User
+
+
+class UserForm(forms.ModelForm):
+    username = forms.CharField(widget=forms.TextInput({
+        'class': 'form-control',
+        'placeholder': '请输入用户名'}))
+    first_name = forms.CharField(widget=forms.TextInput({
+        'class': 'form-control',
+        'placeholder': '请输入名字'}))
+    last_name = forms.CharField(widget=forms.TextInput({
+        'class': 'form-control',
+        'placeholder': '请输入姓氏'}))
+    password = forms.CharField(widget=forms.PasswordInput({
+        'class': 'form-control',
+        'placeholder': '请输入密码'}))
+    email = forms.CharField(widget=forms.TextInput({
+        'class': 'form-control',
+        'placeholder': '请输入邮箱'}))
+
+    class Meta:
+        model = User
+        fields = ('username',
+                  'first_name',
+                  'last_name',
+                  'email',
+                  'password')
+
+"""
 
 
