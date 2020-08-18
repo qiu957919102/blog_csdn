@@ -68,9 +68,10 @@ class RegisterForm(BaseForm, django_forms.Form):
     def clean(self):
         v1 = self.cleaned_data.get('password1')
         v2 = self.cleaned_data.get('password2')
-        print(v1,v2)
+        # print(v1,v2)
         if v1 == v2:
-            pass
+            # pass
+            return self.cleaned_data
         else:
             from django.core.exceptions import ValidationError,NON_FIELD_ERRORS
             raise ValidationError('密码输入不一致')
@@ -79,8 +80,18 @@ class RegisterForm(BaseForm, django_forms.Form):
     def clean_check_code(self):
         if self.request.session.get('CheckCode').upper() != self.request.POST.get('check_code').upper():
             raise ValidationError(message='验证码错误', code='invalid')
-        # else:
-        #     return self.changed_data
+        else:
+            return self.request.session.get('CheckCode')
+    def clean_username(self):
+        v = self.cleaned_data.get('username')
+        if models.UserInfo.objects.filter(username=v).count():
+            raise ValidationError("用户名已存在")
+        return v
+    def clean_email(self):
+        v = self.cleaned_data.get('email')
+        if models.UserInfo.objects.filter(email=v).count():
+            raise ValidationError("邮箱已存在")
+        return v
 
 """
 
