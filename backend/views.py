@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
+from django.shortcuts import redirect
 from repository import models
 from utils.utilsfile import create_validate_code
 from io import BytesIO
@@ -7,54 +8,96 @@ from django.core import serializers
 # Create your views here.
 from utils.auth import check_login
 from backend.forms.account import LoginForm
+from backend.forms.account import RegisterForm
 import json
+# def user_register(request):
+#     """
+#     注册方法
+#     :param request:
+#     :return:
+#     """
+#     if request.method == "GET":
+#         return render(request, "user_register.html")
+#     if request.method == "POST":
+#         result = {'status': False, 'message': None, 'data': None}
+#         CheckCode = request.session.get("CheckCode",None)
+#         username = request.POST.get("username")
+#         password1 = request.POST.get("password1")
+#         password2 = request.POST.get("password2")
+#         code_ver = request.POST.get("code_ver")
+#         nickname = request.POST.get("nickname")
+#         email = request.POST.get("email")
+#         if all([username, password1, password2, nickname,CheckCode]):
+#             if CheckCode.upper() == code_ver.upper():
+#                 if password1 == password2:
+#                     #models.UserInfo.objects.create(username=str(username),password=str(password1),email=email,nickname=str(nickname))
+#                     # print(reset)
+#                         ret = models.UserInfo.objects.filter(username=username)
+#                         eret = models.UserInfo.objects.filter(email=email)
+#                         if ret:
+#                             result['message'] = "用户名🕐已被注册"
+#                         elif eret:
+#                             result['message'] = "邮箱已被注册"
+#                         else:
+#                             models.UserInfo.objects.create(username=username,password=password1,email=email,nickname=nickname)
+#                             result['status'] = True
+#
+#                 else:
+#                     result['message'] = '密码不一致'
+#             else:
+#                 result['message'] = '验证码错误'
+#         else:
+#             result['message'] = '请填写完毕注册信息'
+#
+#
+#         # print(request.POST)
+#         # print(request.POST.get("username"))
+#         # print(request.POST.get("password1"))
+#         # print(request.POST.get("password2"))
+#         # print(request.POST.get("code_ver"))
+#         # print(request.POST.get("email"))
+#     return redirect('user_login.html')
+#     # return render(request,"user_register.html")
+
+
 def user_register(request):
     """
     注册方法
     :param request:
     :return:
     """
+    if request.method == "GET":
+        return render(request, "user_register.html")
     if request.method == "POST":
         result = {'status': False, 'message': None, 'data': None}
-        CheckCode = request.session.get("CheckCode",None)
-        username = request.POST.get("username")
-        password1 = request.POST.get("password1")
-        password2 = request.POST.get("password2")
-        code_ver = request.POST.get("code_ver")
-        nickname = request.POST.get("nickname")
-        email = request.POST.get("email")
-        if all([username, password1, password2, nickname,CheckCode]):
-            if CheckCode.upper() == code_ver.upper():
-                if password1 == password2:
-                    #models.UserInfo.objects.create(username=str(username),password=str(password1),email=email,nickname=str(nickname))
-                    # print(reset)
-                        ret = models.UserInfo.objects.filter(username=username)
-                        eret = models.UserInfo.objects.filter(email=email)
-                        if ret:
-                            result['message'] = "用户名🕐已被注册"
-                        elif eret:
-                            result['message'] = "邮箱已被注册"
-                        else:
-                            models.UserInfo.objects.create(username=username,password=password1,email=email,nickname=nickname)
-                            result['status'] = True
-
-                else:
-                    result['message'] = '密码不一致'
-            else:
-                result['message'] = '验证码错误'
+        form = RegisterForm(request=request, data=request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            models.UserInfo.objects.create(
+                username=form.cleaned_data.get('username'),
+                password=form.cleaned_data.get('password1'),
+                nickname=form.cleaned_data.get('nickname'),
+                email=form.cleaned_data.get('email'),
+            )
+            print(form.cleaned_data.get('username'))
+            # username = form.cleaned_data.get("username")
+            # password1 = form.cleaned_data.get("password1")
+            # nickname = form.cleaned_data.get("nickname")
+            # email = form.cleaned_data.get("email")
+            # print(username,password1,nickname,email)
         else:
-            result['message'] = '请填写完毕注册信息'
+            """
+            <ul class="errorlist"><li>username<ul class="errorlist"><li>用户名不能为空.</li></ul></li><li>password1<ul class="errorlist"><li>密码不能为空.</li></ul></li><li>password2<ul class="errorlist"><li>确认密码不能为空.</li></ul></li><li>check_code<ul class="errorlist"><li>验证码不能为空.</li></ul></li><li>nickname<ul class="errorlist"><li>昵称不能为空.</li></ul></li><li>email<ul class="errorlist"><li>验证码不能为空.</li></ul></li></ul>
+            <ul class="errorlist"><li>check_code<ul class="errorlist"><li>验证码错误</li></ul></li><li>email<ul class="errorlist"><li>邮箱格式错误</li></ul></li><li>__all__<ul class="errorlist nonfield"><li>密码输入不一致</li></ul></li></ul>
 
-
-        # print(request.POST)
-        # print(request.POST.get("username"))
-        # print(request.POST.get("password1"))
-        # print(request.POST.get("password2"))
-        # print(request.POST.get("code_ver"))
-        # print(request.POST.get("email"))
-        return render(request,'user_login.html')
-    return render(request,"user_register.html")
-
+            
+            """
+            print(form.errors)
+            if 'check_code' in form.errors:
+                result['message'] = '验证码错误或者过期'
+            else:
+                result['message'] = '用户名或密码错误'
+    return HttpResponse('....')
 
 def check_code(request):
     """
@@ -144,11 +187,32 @@ def user_login(request):
                 result['message'] = '验证码错误或者过期'
             else:
                 result['message'] = '用户名或密码错误'
+        print(request.session.get('user_info'))
         return HttpResponse(json.dumps(result))
 
 
 
 @check_login
 def admin_index(request):
-    print(request.session.values())
+    # print(request.session.values())
+    # print(request.session.get('user_info'))
     return render(request,"admin_index.html")
+
+
+
+def logout(request):
+    """
+    注销
+    :param request:
+    :return:
+    """
+    """
+    　request.session.clear() #清空(注销的时候使用)
+    """
+    request.session.clear()
+
+    """
+        # 1. 将session中的用户名、昵称删除
+    request.session.flush()
+    """
+    return redirect('user_login.html')
