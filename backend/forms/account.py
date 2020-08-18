@@ -38,6 +38,9 @@ class LoginForm(BaseForm, django_forms.Form):
         if self.request.session.get('CheckCode').upper() != self.request.POST.get('check_code').upper():
             raise ValidationError(message='验证码错误', code='invalid')
 
+        else:
+            return self.changed_data['CheckCode']
+
 
 class RegisterForm(BaseForm, django_forms.Form):
     username = django_fields.CharField(
@@ -67,7 +70,7 @@ class RegisterForm(BaseForm, django_forms.Form):
         v2 = self.cleaned_data.get('password2')
         print(v1,v2)
         if v1 == v2:
-            pass
+            return self.changed_data
         else:
             from django.core.exceptions import ValidationError,NON_FIELD_ERRORS
             raise ValidationError('密码输入不一致')
@@ -76,6 +79,8 @@ class RegisterForm(BaseForm, django_forms.Form):
     def clean_check_code(self):
         if self.request.session.get('CheckCode').upper() != self.request.POST.get('check_code').upper():
             raise ValidationError(message='验证码错误', code='invalid')
+        else:
+            return self.changed_data['CheckCode']
 
 """
 
