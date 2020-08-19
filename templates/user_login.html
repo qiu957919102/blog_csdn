@@ -16,19 +16,28 @@
         <form id="fm" action="/user_login.html" role="form" method="post">
             {% csrf_token %}
             <div class="form-group">
-                <label for="username">用户名</label>
-                <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名">
+{#                <label for="username">用户名</label>#}
+{#                <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名">#}
+                    {{ form_obj.username.label_tag }}
+                    {{ form_obj.username }}
+{#                    <span>{{ form_obj.username.errors.0 }}</span>#}
             </div>
             <div class="form-group">
-                <label for="password1">密码</label>
-                <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码">
+{#                <label for="password1">密码</label>#}
+{#                <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码">#}
+                    {{ form_obj.password.label_tag }}
+                    {{ form_obj.password }}
+{#                    <span>{{ form_obj.password.errors.0 }}</span>#}
             </div>
             <div class="form-group">
-                <label for="code_ver">验证码</label>
-
+{#                <label for="code_ver">验证码</label>#}
+                {{ form_obj.check_code.label_tag }}
                 <div class="row">
                     <div class="col-xs-7">
-                        <input type="text" class="form-control" name="check_code" id="code_ver" placeholder="请输入验证码">
+{#                        <input type="text" class="form-control" name="check_code" id="code_ver" placeholder="请输入验证码">#}
+
+                        {{ form_obj.check_code }}
+{#                        <span>{{ form_obj.check_code.errors.0 }}</span>#}
                     </div>
                     <div class="col-xs-5">
 {#                        <img src="/check_code.html" onclick="changeImg(this);">#}
@@ -78,6 +87,7 @@
                     data: $('#fm').serialize(),
                     dataType: 'JSON',
                     success: function (arg) {
+                        console.log(arg)
                         if(arg.status){
                             {#location.href = '/'#}
                             location.href = 'index.html'
