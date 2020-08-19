@@ -232,4 +232,5 @@ def logout(request):
 
 @check_login
 def user_register_success(request):
+    # print(request.session.get('userinfo'))
     return render(request,'user_register_success.html')
