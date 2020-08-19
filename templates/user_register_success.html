@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>账户注册成功</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.css"/>
+    <style>
+        .register {
+            width: 400px;
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid #f0f0f0;
+            padding: 10px 30px 50px 30px;
+            -webkit-box-shadow: 5px 10px 10px rgba(0, 0, 0, .05);
+            box-shadow: 5px 10px 10px rgba(0, 0, 0, .05);
+        }
+        .usertitle{
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="register">
+        <div class="usertitle">
+            <h1>恭喜注册成功</h1>
+            <p style="color: rosybrown;">
+                <span id="seconds">5</span>秒后自动跳转到登录页面
+            </p>
+
+
+    </div>
+</div>
+<script src="/static/js/jquery-3.1.1.js"></script>
+<script type="text/javascript">
+          var interval;
+                  $(function () {
+                  interval = window.setInterval("changeSecond()", 1000);// 每隔1秒，执行一次changeSecond()方法
+        });
+
+        function changeSecond() {
+            var second = $("#seconds").text();
+            second = second - 1;
+            {#console.log(second)#}
+            if (second == 0) {
+                window.clearInterval(interval);
+                console.log(window.location.protocol)
+                console.log(window.location.host)
+                window.location.href = window.location.protocol + "//" + window.location.host + "/user_login.html";
+                return;
+            }
+            $("#seconds").text(second);
+        }
+</script>
+</body>
+</html>
