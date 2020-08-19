@@ -75,7 +75,7 @@ def user_register(request):
         这个方法地配合ajax使用
         # result = {'status': False, 'message': None, 'data': None}
         """
-
+        # result = {'status': False}
         form_obj = RegisterForm(request=request, data=request.POST)
         if form_obj.is_valid():
             # print(form_obj.cleaned_data)
@@ -85,12 +85,14 @@ def user_register(request):
                 nickname=form_obj.cleaned_data.get('nickname'),
                 email=form_obj.cleaned_data.get('email'),
             )
+            return redirect('/user_register_success.html')
             # print(form_obj.cleaned_data.get('username'))
             # username = form.cleaned_data.get("username")
             # password1 = form.cleaned_data.get("password1")
             # nickname = form.cleaned_data.get("nickname")
             # email = form.cleaned_data.get("email")
             # print(username,password1,nickname,email)
+            # return HttpResponse("....")
         else:
             """
             <ul class="errorlist"><li>username<ul class="errorlist"><li>用户名不能为空.</li></ul></li><li>password1<ul class="errorlist"><li>密码不能为空.</li></ul></li><li>password2<ul class="errorlist"><li>确认密码不能为空.</li></ul></li><li>check_code<ul class="errorlist"><li>验证码不能为空.</li></ul></li><li>nickname<ul class="errorlist"><li>昵称不能为空.</li></ul></li><li>email<ul class="errorlist"><li>验证码不能为空.</li></ul></li></ul>
@@ -106,9 +108,9 @@ def user_register(request):
             #     result['message'] = '验证码错误或者过期'
             # else:
             #     result['message'] = '用户名或密码错误'
-            print(form_obj.errors)
+            # print(form_obj.errors)
 
-    return HttpResponse('....')
+            return render(request,'user_register.html',{"form_obj":form_obj})
 
 def check_code(request):
     """
@@ -198,7 +200,7 @@ def user_login(request):
                 result['message'] = '验证码错误或者过期'
             else:
                 result['message'] = '用户名或密码错误'
-        print(request.session.get('user_info'))
+        # print(request.session.get('user_info'))
         return HttpResponse(json.dumps(result))
 
 
@@ -227,3 +229,7 @@ def logout(request):
     request.session.flush()
     """
     return redirect('user_login.html')
+
+@check_login
+def user_register_success(request):
+    return render(request,'user_register_success.html')
