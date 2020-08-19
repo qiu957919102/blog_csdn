@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^index.html$', view_web.index),
     url(r'^admin_index.html$', views.admin_index),
     url(r'^user_logout.html$', views.logout),
+    url(r'^user_register_success.html$', views.user_register_success),
 
 ]
