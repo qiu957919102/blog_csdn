@@ -171,13 +171,14 @@ def user_login(request):
     :return:
     """
     if request.method == 'GET':
-        return render(request, 'user_login.html')
+        form_obj = LoginForm(request=request)
+        return render(request, 'user_login.html',{"form_obj":form_obj})
     elif request.method == 'POST':
         result = {'status': False, 'message': None, 'data': None}
-        form = LoginForm(request=request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+        form_obj = LoginForm(request=request, data=request.POST)
+        if form_obj.is_valid():
+            username = form_obj.cleaned_data.get('username')
+            password = form_obj.cleaned_data.get('password')
             user_info = models.UserInfo.objects. \
                 filter(username=username, password=password). \
                 values('nid', 'nickname',
@@ -192,16 +193,25 @@ def user_login(request):
             else:
                 result['status'] = True
                 request.session['user_info'] = user_info
-                if form.cleaned_data.get('rmb'):
+                if form_obj.cleaned_data.get('rmb'):
                     request.session.set_expiry(60 * 60 * 24 * 30)
+                return HttpResponse(json.dumps(result))
         else:
-            print(form.errors)
-            if 'check_code' in form.errors:
-                result['message'] = '验证码错误或者过期'
-            else:
-                result['message'] = '用户名或密码错误'
+            # print(form.errors)
+            # if 'check_code' in form.errors:
+            #     result['message'] = '验证码错误或者过期'
+            # else:
+            #     result['message'] = '用户名或密码错误'
         # print(request.session.get('user_info'))
-        return HttpResponse(json.dumps(result))
+        # return HttpResponse(json.dumps(result))
+            """
+            {'username': [ValidationError(['用户名不能为空.'])], 'password': [ValidationError(['密码不能为空.'])], 'check_code': [ValidationError(['验证码不能为空.'])]}
+            """
+            # print(form_obj.errors.as_data())
+            #
+            # print(form_obj.errors.get("username"))
+            # return render(request, 'user_login.html', {"form_obj": form_obj})
+            return HttpResponse(form_obj.errors.as_json())
 
 
 
