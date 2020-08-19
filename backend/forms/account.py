@@ -16,7 +16,17 @@ class LoginForm(BaseForm, django_forms.Form):
     # max_length=20,
     #     error_messages={'required': '用户名不能为空.', 'min_length': "用户名长度不能小于6个字符", 'max_length': "用户名长度不能大于32个字符"}
     # )
-    username = django_fields.CharField()
+    username = django_fields.CharField(
+        error_messages={'required': '用户名不能为空.'},
+        widget=django_widgets.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder':"请输入登录账户",
+
+            }
+        ),
+        label='用户名',
+    )
 
     # password = django_fields.RegexField(
     #     '^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$\%\^\&\*\(\)])[0-9a-zA-Z!@#$\%\^\&\*\(\)]{8,32}$',
@@ -27,25 +37,46 @@ class LoginForm(BaseForm, django_forms.Form):
     #                     'min_length': "密码长度不能小于8个字符",
     #                     'max_length': "密码长度不能大于32个字符"}
     # )
-    password = django_fields.CharField()
+    password = django_fields.CharField(
+        error_messages={'required': '密码不能为空.'},
+        widget=django_widgets.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder':'请输入登录密码',
+                   },
+            render_value=True,
+        ),
+        label='密码',
+    )
     rmb = django_fields.IntegerField(required=False)
 
     check_code = django_fields.CharField(
-        error_messages={'required': '验证码不能为空.'}
+        error_messages={'required': '验证码不能为空.'},
+        widget=django_widgets.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder':"请输入验证码"
+            }
+        ),
+        label='验证码',
     )
 
+    # def clean_check_code(self):
+    #     if self.request.session.get('CheckCode').upper() != self.request.POST.get('check_code').upper():
+    #         raise ValidationError(message='验证码错误', code='invalid')
+    #     #
+    #     # else:
+    #     #     return self.changed_data['check_code']
     def clean_check_code(self):
         if self.request.session.get('CheckCode').upper() != self.request.POST.get('check_code').upper():
             raise ValidationError(message='验证码错误', code='invalid')
-        #
-        # else:
-        #     return self.changed_data['check_code']
-
+        else:
+            return self.request.session.get('CheckCode')
 
 class RegisterForm(BaseForm, django_forms.Form):
     username = django_fields.CharField(
         error_messages={'required': '用户名不能为空.'},
-        widget=django_widgets.TextInput(attrs={'class':'form-control'}),
+        widget=django_widgets.TextInput(attrs={'class':'form-control','placeholder':'请输入注册用户名'}),
         label='用户名',
     )
     """
@@ -54,16 +85,16 @@ class RegisterForm(BaseForm, django_forms.Form):
     password1 = django_fields.CharField(
         error_messages={'required': '密码不能为空.'},
         widget=django_widgets.PasswordInput(
-            attrs={'class': 'form-control'},
+            attrs={'class': 'form-control','placeholder':'请输入注册密码'},
             render_value=True,
         ),
         label='密码',
 
     )
     password2 = django_fields.CharField(
-        error_messages={'required': '确认密码不能为空.'},
+        error_messages={'required': '确认密码不能为空.',},
         widget=django_widgets.PasswordInput(
-            attrs={'class': 'form-control'},
+            attrs={'class': 'form-control','placeholder':'请确认注册密码'},
             render_value=True,
 
         ),
@@ -71,17 +102,17 @@ class RegisterForm(BaseForm, django_forms.Form):
     )
     check_code = django_fields.CharField(
         error_messages={'required': '验证码不能为空.'},
-        widget=django_widgets.TextInput(attrs={'class': 'form-control'}),
+        widget=django_widgets.TextInput(attrs={'class': 'form-control','placeholder':'请输入验证码'}),
         label='验证码',
     )
     nickname = django_fields.CharField(
         error_messages={'required': '昵称不能为空.'},
-        widget=django_widgets.TextInput(attrs={'class': 'form-control'}),
+        widget=django_widgets.TextInput(attrs={'class': 'form-control','placeholder':'请输入昵称'}),
         label='昵称',
     )
     email = django_fields.EmailField(
         error_messages={'required': '验证码不能为空.','invalid': '邮箱格式错误'},
-        widget=django_widgets.EmailInput(attrs={'class': 'form-control'}),
+        widget=django_widgets.EmailInput(attrs={'class': 'form-control','placeholder':'请输入邮箱'}),
         label='邮箱',
     )
 
