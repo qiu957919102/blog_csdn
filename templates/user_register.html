@@ -29,34 +29,47 @@
         <h1>用户注册</h1>
     </div>
     <div>
-        <form action="user_register.html" role="form" method="post">
+{#        novalidate  去除浏览器本身的验证#}
+        <form action="user_register.html" role="form" method="post" novalidate>
             {% csrf_token %}
             <div class="form-group">
-                <label for="username">用户名</label>
-                <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名">
+{#                <label for="username">用户名</label>#}
+{#                <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名">#}
+                    {{ form_obj.username.label_tag }}
+                    {{ form_obj.username }}
             </div>
             <div class="form-group">
-                <label for="password1">密码</label>
-                <input type="password" class="form-control" name="password1" id="password1" placeholder="请输入密码">
+{#                <label for="password1">密码</label>#}
+{#                <input type="password" class="form-control" name="password1" id="password1" placeholder="请输入密码">#}
+                    {{ form_obj.password1.label_tag }}
+                    {{ form_obj.password1 }}
             </div>
             <div class="form-group">
-                <label for="password2">确认密码</label>
-                <input type="password" class="form-control" name="password2" id="password2" placeholder="请确认密码">
+{#                <label for="password2">确认密码</label>#}
+{#                <input type="password" class="form-control" name="password2" id="password2" placeholder="请确认密码">#}
+                {{ form_obj.password2.label_tag }}
+                {{ form_obj.password2 }}
             </div>
             <div class="form-group">
-                <label for="nickname">昵称</label>
-                <input type="text" class="form-control" name="nickname" id="nickname" placeholder="请确认昵称">
+{#                <label for="nickname">昵称</label>#}
+{#                <input type="text" class="form-control" name="nickname" id="nickname" placeholder="请确认昵称">#}
+                    {{ form_obj.nickname.label_tag }}
+                    {{ form_obj.nickname }}
             </div>
             <div class="form-group">
-                <label for="email">邮箱</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="请输入邮箱">
+{#                <label for="email">邮箱</label>#}
+{#                <input type="email" class="form-control" id="email" name="email" placeholder="请输入邮箱">#}
+                    {{ form_obj.email.label_tag }}
+                    {{ form_obj.email }}
             </div>
             <div class="form-group">
-                <label for="code_ver">验证码</label>
+{#                <label for="check_code">验证码</label>#}
 
                 <div class="row">
                     <div class="col-xs-7">
-                        <input type="text" class="form-control" id="code_ver" name="code_ver" placeholder="请输入验证码">
+{#                        <input type="text" class="form-control" id="check_code" name="check_code" placeholder="请输入验证码">#}
+                            {{ form_obj.check_code.label_tag }}
+                            {{ form_obj.check_code }}
                     </div>
                     <div class="col-xs-5">
                         <img src="/check_code.html" onclick="changeImg(this);">
@@ -64,7 +77,6 @@
                 </div>
 
             </div>
-
             <input type="submit" value="注册">
         </form>
     </div>
