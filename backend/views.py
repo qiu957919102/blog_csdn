@@ -66,20 +66,26 @@ def user_register(request):
     :param request:
     :return:
     """
+
     if request.method == "GET":
-        return render(request, "user_register.html")
+        form_obj = RegisterForm(request=request)
+        return render(request, "user_register.html",{"form_obj":form_obj})
     if request.method == "POST":
-        result = {'status': False, 'message': None, 'data': None}
-        form = RegisterForm(request=request, data=request.POST)
-        if form.is_valid():
-            print(form.cleaned_data)
+        """
+        这个方法地配合ajax使用
+        # result = {'status': False, 'message': None, 'data': None}
+        """
+
+        form_obj = RegisterForm(request=request, data=request.POST)
+        if form_obj.is_valid():
+            # print(form_obj.cleaned_data)
             models.UserInfo.objects.create(
-                username=form.cleaned_data.get('username'),
-                password=form.cleaned_data.get('password1'),
-                nickname=form.cleaned_data.get('nickname'),
-                email=form.cleaned_data.get('email'),
+                username=form_obj.cleaned_data.get('username'),
+                password=form_obj.cleaned_data.get('password1'),
+                nickname=form_obj.cleaned_data.get('nickname'),
+                email=form_obj.cleaned_data.get('email'),
             )
-            print(form.cleaned_data.get('username'))
+            # print(form_obj.cleaned_data.get('username'))
             # username = form.cleaned_data.get("username")
             # password1 = form.cleaned_data.get("password1")
             # nickname = form.cleaned_data.get("nickname")
@@ -92,11 +98,16 @@ def user_register(request):
 
             
             """
-            print(form.errors)
-            if 'check_code' in form.errors:
-                result['message'] = '验证码错误或者过期'
-            else:
-                result['message'] = '用户名或密码错误'
+            """
+            这个方法地配合ajax使用
+                        # print(form_obj.errors.as_json())
+            """
+            # if 'check_code' in form.errors:
+            #     result['message'] = '验证码错误或者过期'
+            # else:
+            #     result['message'] = '用户名或密码错误'
+            print(form_obj.errors)
+
     return HttpResponse('....')
 
 def check_code(request):
