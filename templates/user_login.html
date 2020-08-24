@@ -65,9 +65,9 @@
                     <span style="padding: 0 5px 0 5px;display: inline-block;font-size: 14px">
                         <i class="fa fa-minus-circle" aria-hidden="true"></i>
                     </span>
-                        <span id="error_msg_username" style="font-size: 12px;"></span>
-                        <span id="error_msg_password" style="font-size: 12px;"></span>
-                        <span id="error_msg_check_code" style="font-size: 12px;"></span>
+                    <span id="error_msg_username" style="font-size: 12px;"></span>
+                    <span id="error_msg_password" style="font-size: 12px;"></span>
+                    <span id="error_msg_check_code" style="font-size: 12px;"></span>
                 </div>
             </div>
         </div>
@@ -112,10 +112,21 @@
                             {#$msg_check_code.parent.removeClass('hide');#}
                             {#$msg_check_code.text(arg.check_code[0].message);#}
                             {#console.log(arg);#}
-                            console.log(arg);
-                            $msg_username.parent().removeClass('hide');
+
+                            {#$msg_username.parent().removeClass('hide');#}
                             for (var p in arg) {
-                                console.log(arg[p][0].message);
+                                {#console.log(arg[p][0].message);#}
+                                $msg_username.parent().removeClass('hide');
+                            if(p == "username"){
+                                    $msg_username.text(arg[p][0].message);
+                            }else if(p == "password"){
+                                    $msg_password.removeClass('hide');
+                                    $msg_password.text(arg[p][0].message);
+                                }
+                            else if(p == "check_code"){
+                                    $msg_check_code.removeClass('hide');
+                                    $msg_check_code.text(arg[p][0].message);
+                                }
                             }
 {#                            if(arg.hasOwnProperty("username") || arg.hasOwnProperty("password") || arg.hasOwnProperty("check_code")){#}
 {#                                console.log(arg.username[0].message)#}
