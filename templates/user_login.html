@@ -39,6 +39,7 @@
                         {{ form_obj.check_code }}
 {#                        <span>{{ form_obj.check_code.errors.0 }}</span>#}
                     </div>
+
                     <div class="col-xs-5">
 {#                        <img src="/check_code.html" onclick="changeImg(this);">#}
                         <img id="check_code_img" src="/check_code.html" onclick="changeImg(this);">
@@ -64,7 +65,9 @@
                     <span style="padding: 0 5px 0 5px;display: inline-block;font-size: 14px">
                         <i class="fa fa-minus-circle" aria-hidden="true"></i>
                     </span>
-                    <span id="error_msg" style="font-size: 12px;"></span>
+                        <span id="error_msg_username" style="font-size: 12px;"></span>
+                        <span id="error_msg_password" style="font-size: 12px;"></span>
+                        <span id="error_msg_check_code" style="font-size: 12px;"></span>
                 </div>
             </div>
         </div>
@@ -79,21 +82,49 @@
         });
         function bindLogin() {
             $('#submit').click(function () {
-                var $msg = $('#error_msg');
-                $msg.parent().addClass('hide');
+                var $msg_username = $('#error_msg_username');
+                var $msg_password = $('#error_msg_password');
+                var $msg_check_code = $('#error_msg_check_code');
+                $msg_username.parent().addClass('hide');
+                $msg_password.addClass('hide');
+                $msg_check_code.addClass('hide');
                 $.ajax({
                     url: 'user_login.html',
                     type: 'POST',
                     data: $('#fm').serialize(),
                     dataType: 'JSON',
                     success: function (arg) {
-                        console.log(arg)
+                        {#console.log(arg.status);#}
                         if(arg.status){
                             {#location.href = '/'#}
                             location.href = 'index.html'
                         }else{
-                            $msg.parent().removeClass('hide');
-                            $msg.text(arg.message);
+                            {#console.log(arg.password[0]);#}
+                            {##}
+                            {#console.log(arg.check_code[0].message);#}
+                            {#console.log(arg.username[0].message);#}
+                            {#console.log(arg.password[0].message);#}
+
+                            {#$msg_username.parent().removeClass('hide');#}
+                            {#$msg_username.text(arg.username[0].message);#}
+                            {#$msg_password.parent.removeClass('hide');#}
+                            {#$msg_password.text(arg.password[0].message);#}
+                            {#$msg_check_code.parent.removeClass('hide');#}
+                            {#$msg_check_code.text(arg.check_code[0].message);#}
+                            {#console.log(arg);#}
+                            console.log(arg);
+                            $msg_username.parent().removeClass('hide');
+                            for (var p in arg) {
+                                console.log(arg[p][0].message);
+                            }
+{#                            if(arg.hasOwnProperty("username") || arg.hasOwnProperty("password") || arg.hasOwnProperty("check_code")){#}
+{#                                console.log(arg.username[0].message)#}
+{#                                console.log(arg.password[0].message)#}
+{#                                console.log(arg.check_code[0].message)#}
+{#                            }#}
+
+
+
                             var img = $('#check_code_img')[0];
                             img.src = img.src + '?';
                             $('#password,#check_code').val('');
