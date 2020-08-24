@@ -174,7 +174,8 @@ def user_login(request):
         form_obj = LoginForm(request=request)
         return render(request, 'user_login.html',{"form_obj":form_obj})
     elif request.method == 'POST':
-        result = {'status': False, 'message': None, 'data': None}
+        # result = {'status': False, 'message': None, 'data': None}
+        result = {'status': False}
         form_obj = LoginForm(request=request, data=request.POST)
         if form_obj.is_valid():
             username = form_obj.cleaned_data.get('username')
@@ -195,7 +196,7 @@ def user_login(request):
                 request.session['user_info'] = user_info
                 if form_obj.cleaned_data.get('rmb'):
                     request.session.set_expiry(60 * 60 * 24 * 30)
-                return HttpResponse(json.dumps(result))
+            return HttpResponse(json.dumps(result))
         else:
             # print(form.errors)
             # if 'check_code' in form.errors:
