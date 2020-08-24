@@ -72,6 +72,16 @@ class LoginForm(BaseForm, django_forms.Form):
             raise ValidationError(message='验证码错误', code='invalid')
         else:
             return self.request.session.get('CheckCode')
+    def clean_username(self):
+        v = self.cleaned_data.get('username')
+        if not models.UserInfo.objects.filter(username=v).count():
+            raise ValidationError("用户名不存在")
+        return v
+    def clean_password(self):
+        v = self.cleaned_data.get('password')
+        if not models.UserInfo.objects.filter(password=v).count():
+            raise ValidationError("密码不存在")
+        return v
 
 class RegisterForm(BaseForm, django_forms.Form):
     username = django_fields.CharField(
