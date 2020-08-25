@@ -119,9 +119,10 @@
     <div class="pg-header">
         <div class="logo left">博客系统</div>
         <div class="hl-menu left">
-            <a class="item" href="#">linux运维</a>
-            <a class="item" href="#">python开放</a>
-            <a class="item" href="#">自动化测试</a>
+            {% block article_type %}{% endblock %}
+{#            <a class="item" href="#">linux运维</a>#}
+{#            <a class="item" href="#">python开放</a>#}
+{#            <a class="item" href="#">自动化测试</a>#}
         </div>
         <div class="hr-menu right">
             <a class="item" href="#">消息</a>
