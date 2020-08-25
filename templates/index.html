@@ -1,2 +1,8 @@
 {% extends 'include/base.html' %}
 {% block title %}欢迎登录{% endblock %}
+{% block article_type %}
+    {% for article in article_type_list %}
+    <a class="item" href="#">{{ article.1 }}</a>
+{#    <a class="item" href="{{ article.0 }}">{{ article.1 }}</a>#}
+    {% endfor %}
+{% endblock %}
