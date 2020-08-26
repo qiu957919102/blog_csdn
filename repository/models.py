@@ -46,7 +46,8 @@ class Blog(models.Model):
         verbose_name = "博客信息"
         verbose_name_plural = verbose_name
 
-
+    def __str__(self):
+        return self.title
 
 class UserFans(models.Model):
     """
@@ -75,6 +76,8 @@ class Category(models.Model):
     class Meta:
         verbose_name = "博主个人文章分类表"
         verbose_name_plural = verbose_name
+    def __str__(self):
+        return self.title
 # blog = Blog.objects.filter(site='bingdujieer').first()
 # info = obj.user
 # category_list = Category.objects.filter(blog_id=blog.nid)
@@ -89,7 +92,8 @@ class ArticleDetail(models.Model):
     class Meta:
         verbose_name = "文章详细表"
         verbose_name_plural = verbose_name
-
+    def __str__(self):
+        return self.content
 
 class UpDown(models.Model):
     """
