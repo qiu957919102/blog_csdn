@@ -47,6 +47,11 @@ class Pagination(object):
         return v
 
     def page_str(self, base_url):
+        """
+        分页属性返回
+        :param base_url:
+        :return:
+        """
         page_list = []
 
         if self.total_count < self.pager_num:
