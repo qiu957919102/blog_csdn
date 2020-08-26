@@ -5,6 +5,12 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7-dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/static/css/row-avatar.css"/>
+    <link rel="stylesheet" href="/static/css/edmure.css"/>
+    <link rel="stylesheet" href="/static/css/commons.css"/>
+    <link rel="stylesheet" href="/static/css/row-avatar.css"/>
+    <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="/static/plugins/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
     {% block css %}{% endblock %}
     <style>
         html, body {
@@ -120,7 +126,45 @@
     {% block index-header %} {% endblock %}
     </div>
     <div class="pg-body container">
-        <div class="col-md-8">左</div>
+        <div class="col-md-8">
+            <div class="article-list">
+                {% for row in article_list %}
+                    <div class="article-item clearfix">
+                        <h3><a href="#">{{ row.title }}</a></h3>
+                        <div class="clearfix">
+                            <a class="avatar left" href="#">
+                                <img src="/static/imgs/avatar/20130809170025.png">
+                            </a>
+                            {{ row.summary }}
+                        </div>
+                        <div class="footers">
+                            <a href="#">
+                                <i class="fa fa-user-o" aria-hidden="true"></i>
+                                <span>{{ row.blog.user.nickname }}</span>
+                            </a>
+                            <span>发布于 2014-11-11</span>
+                            <a href="#" class="ele">
+                                <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                                <span>{{ row.comment_count }}</span>
+                            </a>
+                            <a href="#" class="ele">
+                                <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                <span>{{ row.up_count }}</span>
+                            </a>
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="clearfix">
+
+                <ul class="pagination">
+                    {{ page_str }}
+                </ul>
+
+            </div>
+        </div>
         <div class="col-md-4">右</div>
     </div>
     <div class="pg-bottom">3</div>
