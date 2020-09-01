@@ -37,7 +37,7 @@
             /* 設定header的高度 */
             height: 48px;
             box-sizing: border-box;
-            background-color: #8a6d3b;
+            {#background-color: #8a6d3b;#}
             min-width: 1100px;
             line-height: 48px;
             font-size: 13px;
@@ -52,7 +52,7 @@
             bottom: 48px;
             {#padding-top: 48px;#}
             {#padding-bottom: 48px;#}
-            background-color: #b2dba1;
+            {#background-color: #b2dba1;#}
             {#margin: auto;#}
 
             margin-right: 20%;
@@ -91,7 +91,7 @@
             bottom: 0;
             /* 展開footer寬度 */
             width: 100%;
-            background-color: #1b6d85;
+            {#background-color: #1b6d85;#}
 
         }
         .pg-header .logo{
@@ -122,7 +122,8 @@
 </head>
 <body>
 <div class="wrapper">
-    <div class="pg-header">
+    <div class="pg-header container">
+
     {% block index-header %} {% endblock %}
     </div>
     <div class="pg-body container">
